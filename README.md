@@ -4,10 +4,10 @@ Yeca
 
 ¿Quiénes?
 ====
-- [Demian Ferreiro]("http://github.com/epidemian")
-- [Esteban Invernizzi]("http://github.com/invirnizzie")
-- [Mariano Simone]("http://www.marianosimone.com.ar")
-- [Mariano Vicente]("http://github.com/vmariano")
+- [Demian Ferreiro](http://github.com/epidemian)
+- [Esteban Invernizzi](http://github.com/invirnizzie)
+- [Mariano Simone](http://www.marianosimone.com.ar)
+- [Mariano Vicente](http://github.com/vmariano)
 
 ¿Por qué?
 ===
