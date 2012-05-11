@@ -19,9 +19,25 @@
 	            li.appendTo("#paths");
 	        });
 	    }
+
         function search_paths(from, to, success, error) {
-            usig.Recorridos.buscarRecorridos(from, to, success, error);
+            var full_results = [];
+            var types = ['transporte', 'auto', 'pie'];
+            var process_next = function(results) {
+                console.log("proceso uno de: " + types);
+                console.log(results);
+                full_results = full_results.concat(results);
+                var type = types.pop();
+                if (type) {
+                    usig.Recorridos.opts.tipo = type;
+                    usig.Recorridos.buscarRecorridos(from, to, process_next);
+                } else {
+                    success(full_results);
+                }
+            };
+            process_next([]);
         }
+
 	    $(document).ready(function(){
 	        var from = getURLParameter('from');
 	        var to = getURLParameter('to');
@@ -31,7 +47,7 @@
 	            new usig.Punto(106846.501267,101724.82835),
 	            show_paths,
 	            function() {
-					    alert("error");//$('#recorridos').html('Se produjo un error el buscar el recorrido.');
+				    alert("error");//$('#recorridos').html('Se produjo un error el buscar el recorrido.');
 		        });
 	    });
 	</script>
