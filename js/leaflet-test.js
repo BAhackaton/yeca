@@ -24,9 +24,11 @@ var res = [90, 50, 30, 15, 7.5, 4, 2, 1, 0.5, 0.2]
 map.addLayer(tilelayer);
 map.on('locationfound', onLocationFound);
 map.on('locationerror', onLocationError);
-//map.on('click',onClickEvt)
+map.on('click',onClickEvt)
 map.locateAndSetView(4);
 //map.setView(start, 6);
+
+addPath();
 
 function onLocationFound(e) {
     var radius = e.accuracy / 2;
@@ -43,9 +45,35 @@ function onLocationError(e) {
 	map.setView(start, 6);
     alert(e.message);
 }
-/*
+
 function onClickEvt(e){
-	map.addLayer(new L.Marker(e.latlng))
-	window.console.log(map.project(e.latlng,map.getZoom()).x+', '+map.project(e.latlng,map.getZoom()).y);
-	window.console.log(e.latlng.lat+', '+e.latlng.lng);
-}*/
+    map.addLayer(new L.Marker(e.latlng));
+	console.log(map.project(e.latlng,map.getZoom()).x+', '+map.project(e.latlng,map.getZoom()).y);
+	console.log(e.latlng.lat+', '+e.latlng.lng);
+    console.log(map.latLngToLayerPoint(e.latlng));
+
+}
+
+function addPath() {
+    var coords = [
+        [-34.628828609076315, -58.42606464421627],
+        [-34.621392421493994, -58.42753999352168],
+        [-34.620307034386975, -58.41658210376545],
+        [-34.614763485504895, -58.41691229617314],
+        [-34.612452541696655, -58.39140101131062],
+//      [3270.9999999268457, -3057.999801682048 ],
+//      [3261.9999999299007, -3112.999801691695 ],
+//      [3328.9999999084307, -3120.999801693005 ],
+//      [3326.9999999091106, -3161.9998017002063],
+//      [3482.9999998587496, -3178.9998017031107]
+    ];
+
+    var latLngs = [];
+    for (var i = 0; i < coords.length; i++) {
+        var coord = coords[i];
+        latLngs.push(new L.LatLng(coord[0], coord[1]));
+    }
+    console.log(latLngs);
+    map.addLayer(new L.Polyline(latLngs, {color: 'red'}));
+
+}
