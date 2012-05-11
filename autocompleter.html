@@ -12,6 +12,7 @@
 		var origen, destino;
 
 		var ac = new usig.AutoCompleter('o', {
+            skin: 'dark',
        		onReady: function() {
        			$('#o').val('').removeAttr('disabled').focus();	        			
        		},
@@ -24,28 +25,12 @@
     			if (pt instanceof usig.Punto) {
     				if (origen instanceof usig.Direccion) {
     					origen.setCoordenadas(pt);
+    					$("#coord").text("Vas a: " + pt.x + ", " + pt.y);
     				}				
     			}
        		} 
        	});
 		
-		var ac = new usig.AutoCompleter('d', {
-       		onReady: function() {
-       			$('#d').val('').removeAttr('disabled');	        			
-       		},
-       		afterSelection: function(option) {
-       			if (option instanceof usig.Direccion || option instanceof usig.inventario.Objeto) {
-       				destino = option;
-       			}
-       		},
-       		afterGeoCoding: function(pt) {
-    			if (pt instanceof usig.Punto) {
-    				if (destino instanceof usig.Direccion) {
-    					destino.setCoordenadas(pt);
-    				}				
-    			}		       			
-       		} 
-       	});
 	});	
 	</script>
   </head>
@@ -54,12 +39,7 @@
         <form id="mainForm" accept-charset="utf-8">
       	<label for="o">Origen</label>
      	<input type="text" size="30" name="o" id="o" title="Origen del recorrido" class="text"/>
-     	<span id="ejemplo">ej.: Callao y Corrientes, Florida 550, Teatro San Martín, etc.</span>
-      	<label for="d">Destino</label>
-     	<input type="text" size="30" name="d" id="d" title="Destino del recorrido" class="text"/>
-     	<a class="button" id="buscar" href="#">Buscar Recorrido</a><br/>
-	    <div id="recorridos">No hay recorridos para mostrar</div>&nbsp;
-	    <div id="mapa"></div>
+     	<span id="coord"></span>
        </form>
       </div>
   </body>
