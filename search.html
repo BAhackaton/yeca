@@ -57,12 +57,18 @@
             type="text/javascript"></script>
 
     <script type="text/javascript">
+
+        var icons = {"walk":"img/Icons/Transport/pedestriancrossing.png",
+            "car":"img/Icons/Transport/car.png",
+            "transporte_publico":"img/Icons/Transport/underground.png"
+        };
+
         function show_paths(paths) {
 
             var posiblePaths = $(paths).map(function () {
                 return {
                     title:this.toString(),
-                    favicon:"http://icons.iconarchive.com/icons/icons-land/transport/256/SubwayTrain-icon.png"
+                    favicon: icons[this.getTipo()]
                 }
             });
 
@@ -74,8 +80,21 @@
         }
 
         function search_paths(from, to, success, error) {
-            usig.Recorridos.buscarRecorridos(from, to, success, error);
+            var full_results = [];
+            var types = ['transporte', 'auto', 'pie'];
+            var process_next = function(results) {
+                full_results = full_results.concat(results);
+                var type = types.pop();
+                if (type) {
+                    usig.Recorridos.opts.tipo = type;
+                    usig.Recorridos.buscarRecorridos(from, to, process_next);
+                } else {
+                    success(full_results);
+                }
+            };
+            process_next([]);
         }
+
 
         $(function () {
 
