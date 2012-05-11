@@ -203,26 +203,23 @@
 
         //Mock up
 
-
-    });
-
-
-</script>
-
-
-<script type="text/javascript">
-
-    $("#go-button").bind("click tap", function() {
-        debugger;
-        var from = $("input#from-input").val();
-        var to = $("input#to-input").val();
-        Yeca.searchPaths(from, to, function(paths) {
-            $.mobile.changePage($("#two"));
-            /*
-             TODO populate list
-             */
+        $("#go-button").bind("click tap", function() {
+            debugger;
+            var from = $("input#from-input").val();
+            var to = $("input#to-input").val();
+            Yeca.searchPaths(from, to, function(paths) {
+                $.mobile.changePage($("#two"));
+                /*
+                 TODO populate list
+                 */
+            });
         });
+
+        Yeca.storeCurrentLocation();
+        // Position map in current location
+
     });
+
 
 </script>
 

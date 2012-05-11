@@ -1,6 +1,7 @@
 (function() {
 
     var Yeca = {};
+    var currentLocation;
 
     function _searchPaths(fromPoint, toPoint, successHandler, errorHandler) {
         /* Search paths "sequentially", aggregate them and then pass all to successHandler
@@ -35,6 +36,15 @@
             navigator.geolocation.getCurrentPosition(success, error, settings);
         }
     };
+
+    Yeca.storeCurrentLocation = function() {
+        Yeca.getLocation({
+            success: function(position) {
+                // TODO Convert using proj4
+                currentLocation = position.coords;
+            }
+        })
+    }
 
     window.Yeca = Yeca;
 
