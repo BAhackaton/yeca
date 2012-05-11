@@ -24,8 +24,6 @@
             var full_results = [];
             var types = ['transporte', 'auto', 'pie'];
             var process_next = function(results) {
-                console.log("proceso uno de: " + types);
-                console.log(results);
                 full_results = full_results.concat(results);
                 var type = types.pop();
                 if (type) {
