@@ -47,10 +47,46 @@
     <script src="js/libs/modernizr-2.0.6.min.js"></script>
     <script src="js/libs/jquery-1.7.1.min.js"></script>
     <script src="js/libs/jquery.mobile-1.1.0.js"></script>
+    <script src="js/underscore-1.3.3.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            //Mock up
+
+            var posiblePaths = [];
+            posiblePaths.push({favicon:"http://icons.iconarchive.com/icons/icons-land/transport/256/SubwayTrain-icon.png"
+                ,title:"Recorrido 1"});
+
+            posiblePaths.push({favicon:"http://icons.iconarchive.com/icons/icons-land/transport/256/SubwayTrain-icon.png"
+                ,title:"Recorrido 2"});
+
+            var directionsHtml = _.template($("#path-result-item-template").text(),{paths:posiblePaths});
+
+            $("#search-result-list").append($(directionsHtml));
+            $("#search-result-list").listview('refresh');
+
+        });
+
+
+    </script>
 
 </head>
 
 <body>
+<!-- Templating html -->
+<textarea id="path-result-item-template" style="display: none;">
+   <% _.each(paths,function (path) { %>
+    <li>
+        <a href="#">
+            <img class="ui-li-icon" src="<%=path.favicon%>" width="25" height="25">
+            <%=path.title%>
+        </a>
+    </li>
+    <% }); %>
+</textarea>
+<!-- //Templating html -->
+
 
 <div id="container">
     <header>
@@ -69,6 +105,7 @@
             <h2>One</h2>
 
             <h3>Show internal pages:</h3>
+
             <p><a href="#two" data-role="button">Show page "two"</a></p>
 
             <p>
@@ -94,19 +131,21 @@
 
         <div data-role="content">
             <h2>Recorridos</h2>
-
+            <!--
             <iframe width="320" height="250" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
                     src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=es&amp;geocode=&amp;q=Algarrobo+1001,+Ciudad+Aut%C3%B3noma+de+Buenos+Aires,+Argentina&amp;aq=0&amp;oq=algarrobo+10&amp;sll=-34.603723,-58.381593&amp;sspn=0.280328,0.676346&amp;t=h&amp;ie=UTF8&amp;hq=&amp;hnear=Algarrobo+1001,+Barracas,+Buenos+Aires,+Argentina&amp;z=14&amp;ll=-34.65435,-58.379507&amp;output=embed"></iframe>
+            -->
             <br/>
-            <small><a href="http://maps.google.com/maps?f=q&amp;source=embed&amp;hl=es&amp;geocode=&amp;q=Algarrobo+1001,+Ciudad+Aut%C3%B3noma+de+Buenos+Aires,+Argentina&amp;aq=0&amp;oq=algarrobo+10&amp;sll=-34.603723,-58.381593&amp;sspn=0.280328,0.676346&amp;t=h&amp;ie=UTF8&amp;hq=&amp;hnear=Algarrobo+1001,+Barracas,+Buenos+Aires,+Argentina&amp;z=14&amp;ll=-34.65435,-58.379507"
-                      style="color:#0000FF;text-align:left">Ver mapa más grande</a></small>
+            <small><a
+                    href="http://maps.google.com/maps?f=q&amp;source=embed&amp;hl=es&amp;geocode=&amp;q=Algarrobo+1001,+Ciudad+Aut%C3%B3noma+de+Buenos+Aires,+Argentina&amp;aq=0&amp;oq=algarrobo+10&amp;sll=-34.603723,-58.381593&amp;sspn=0.280328,0.676346&amp;t=h&amp;ie=UTF8&amp;hq=&amp;hnear=Algarrobo+1001,+Barracas,+Buenos+Aires,+Argentina&amp;z=14&amp;ll=-34.65435,-58.379507"
+                    style="color:#0000FF;text-align:left">Ver mapa más grande</a></small>
 
-            <ul data-role="listview" data-theme="c">
-                <li><a href="#">Recorrido 1</a></li>
-                <li><a href="#">Recorrido 2</a></li>
-                <li><a href="#">Recorrido a pie mas rapido y más mejor</a></li>
+            <ul id="search-result-list" data-role="listview" data-theme="c">
+                <!-- Here must be the list of possible paths -->
             </ul>
-            <br />
+
+            <br/>
+
             <p>
                 <a href="#one" data-role="button">Volver a buscar</a>
             </p>
