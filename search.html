@@ -142,21 +142,13 @@
                data-role="button"
                data-icon="arrow-l"
                data-iconpos="left"
+
                data-mini="true">Volver</a>
 
             <h1>
                 <img class="header-image" src="marketing/logo.png">
             </h1>
-
-            <a href="#"
-               id="go-details"
-               data-transition="slide"
-               data-icon="arrow-r"
-               data-iconpos="right"
-               data-mini="true"
-               data-role="button">Detalle</a>
-
-        </div>
+       </div>
         <!-- /header -->
 
         <div class="" data-role="content">
@@ -192,6 +184,7 @@
                data-icon="arrow-l"
                data-iconpos="left"
                data-mini="true"
+               class="ui-btn-left"
                data-role="button">Volver</a>
 
         </div>
@@ -339,11 +332,6 @@
                  */
                 show_paths(paths);
             });
-        });
-
-        //Go to details of the path
-        $("#go-details").bind("click tap",function(){
-            Yeca.changePage(3);
         });
 
         //Return to the result paths
