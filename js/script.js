@@ -140,15 +140,28 @@
         }
     };
 
+    var status = {
+        'from-input': function() { return Yeca.origin;},
+        'to-input': function() { return Yeca.destination;}
+    }
     Yeca.initAutocompleter = function(id, afterSelectionCb, afterGeocodingCb) {
-        new usig.AutoCompleter(id, {
+        var selector = '#' + id;
+        var ac = new usig.AutoCompleter(id, {
             skin:'dark',
             onReady:function () {
-                $('#' + id).val('').removeAttr('disabled');
+                $(selector).val('').removeAttr('disabled');
             },
             afterSelection:afterSelectionCb,
             afterGeoCoding:afterGeocodingCb
         });
+        $(selector).focus(function() {
+       	    if (!status[id]()) {
+           	    $(selector).bind("blur", function( event ) {
+                    $(this).unbind( event );
+               	    ac.selectOption(0);
+                });
+            }
+       	});
     };
 
     var pageSelectors = ["#one", "#two", "#three"];
