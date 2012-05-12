@@ -1,4 +1,4 @@
-(function () {
+//(function () {
     var res = [90, 50, 30, 15, 7.5, 4, 2, 1, 0.5, 0.2]
       , start = new L.LatLng(-34.61139, -58.38044)
       , map = new L.Map('map', {
@@ -12,26 +12,35 @@
       , tilelayer = new L.TileLayer.WMS(mapUrl, {
           scheme:'wms', maxZoom:9, minZoom:0, worldCopyJump:false, continuousWorld:true, format:'image/png', transparent:true, attribution:attrib, layers:'mapabsas_default'
         });
+    var userMarker, userCircle;
     map.addLayer(tilelayer);
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
     map.on('click', onClickEvt)
-    map.locateAndSetView(4);
+    map.locate(/*{watch: true}*/);
 
     function onLocationFound(e) {
         var radius = e.accuracy / 2;
 
-        var marker = new L.Marker(e.latlng);
-        map.addLayer(marker);
-        marker.bindPopup("Estas en un radio de " + radius + " metros de este punto.");
+        if (!userMarker) {
+            userMarker = new L.Marker(e.latlng);
+            map.addLayer(userMarker);
+            userMarker.bindPopup("Estas en un radio de " + radius + " metros de este punto.");
+            userCircle = new L.Circle(e.latlng, radius);
+            map.addLayer(userCircle);
+        }
+        userMarker.setLatLng(e.latlng);
 
-        var circle = new L.Circle(e.latlng, radius);
-        map.addLayer(circle);
+        map.setView(e.latlng)
+        map.setZoom(6);
+
+        // userLocation is a usig.Point on the coordinates of the map.
+        Yeca.userLocation = latLngToUsigPoint(e.latlng);
     }
 
     function onLocationError(e) {
         map.setView(start, 6);
-        alert("No pudimos encontrar tu ubicacion, por favor revisa la configuracion de tu navegador");
+        alert("No se pudo obtener tu ubicación :(");
     }
 
     function onClickEvt(e) {
@@ -97,12 +106,8 @@
     function showPlan(plan) {
         removeCurrentPlanLayers();
 
-        var firstLatLng, lastLatLng;
         var planBounds = new L.LatLngBounds();
-        function extendPlanBounds(latlng) {
-            if (!firstLatLng) firstLatLng = latlng;
-            lastLatLng = latlng;
-        }
+        function extendPlanBounds(latlng) { planBounds.extend(latlng) }
 
         for (var i = 0; i < plan.length; i++) {
             var step = plan[i]
@@ -169,9 +174,7 @@
         } // for
 
         // Fits the plan on the map =D
-        if (firstLatLng && lastLatLng) {
-            map.fitBounds(new L.LatLngBounds([firstLatLng, lastLatLng]));
-        }
+        map.fitBounds(planBounds);
     }
 
     function removeCurrentPlanLayers() {
@@ -212,12 +215,22 @@
 
     // Converts map coordinates to L.LatLng. 'coords' must be a 2-element array.
     function mapCoordsToLatLng(coords) {
-        var point = {x:coords[0], y:coords[1]}
+        var point = {x:coords[0], y:coords[1]};
         var projected = Proj4js.transform(projection, Proj4js.WGS84, point);
 
         // I don't know why the x and y properties are backwards here xD
         return new L.LatLng(projected.y, projected.x);
     }
+
+    function latLngToUsigPoint(latlng) {
+        // And here we have to invert the the coordinates again so that
+        // latLngToUsigPoint(mapCoordsToLatLng(someCoord)) == someCoord
+        var point = {x:latlng.lng, y:latlng.lat};
+        var projected = Proj4js.transform(Proj4js.WGS84, projection, point);
+
+        return new usig.Punto(projected.x, projected.y);
+    }
+
 
     function swapSamplePlan() {
         var plan = samplePlans.shift();
@@ -228,4 +241,4 @@
     window.Yeca || (window.Yeca = {});
     window.Yeca.map = map;
     window.Yeca.showPlan = showPlan;
-})();
+//})();

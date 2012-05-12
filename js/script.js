@@ -2,9 +2,6 @@
 
     window.Yeca || (window.Yeca = {});
 
-    var currentLocation;
-    var usingDefaultLocation;
-
     // Origin and destination are locations (Direccion, Inventario)
     Yeca.origin = null;
     Yeca.destination = null;
@@ -16,13 +13,21 @@
         // TODO Handle errors
         var full_results = [];
         var types = ['transporte', 'auto', 'pie'];
+
+        var origin = Yeca.origin && Yeca.origin.getCoordenadas();
+        origin = origin || Yeca.userLocation;
+
+        if (!origin) return;
+
         var process_next = function (results) {
             full_results = full_results.concat(results);
             var type = types.pop();
             if (type) {
+
+
                 usig.Recorridos.opts.tipo = type;
                 usig.Recorridos.buscarRecorridos(
-                        Yeca.origin.getCoordenadas(),
+                        origin,
                         Yeca.destination.getCoordenadas(),
                         process_next);
             } else {
@@ -51,21 +56,7 @@
         }
     };
 
-    Yeca.storeCurrentLocation = function() {
-        Yeca.getLocation({
-            success: function(position) {
-                // TODO Convert using proj4
-                Yeca.origin = position.coords;
-                usingDefaultLocation = true;
-            },
-            error: function() {
-                usingDefaultLocation = false;
-            }
-        })
-    };
-
     Yeca.init = function() {
-        Yeca.storeCurrentLocation();
     }
 
     Yeca.tests = {
