@@ -37,7 +37,6 @@
 					        html += '<li><em>'+k + '</em>: ' + v + '</li>';
 					    });
 					    html += '</ul></li>';
-					    //html += '<li>type:'+this.type+', time:'+this.time+', traveled:'+this.traveled+', walked:'+this.walked+', gml:'+this.gml+'</li>';
 					});
 					html+='</ol>';
 					$(html).appendTo("#data");
@@ -58,14 +57,14 @@
 	                extend_data($(this).attr("path_index"));
 	                return false;
 	            });
-	            a.appendTo(li);//$(li).html(desc);
+	            a.appendTo(li);
 	            li.appendTo("#paths");
 	        });
 	    }
 
         function search_paths(from, to, success, error) {
             var full_results = [];
-            var types = ['transporte'/*, 'auto', 'pie'*/];
+            var types = ['transporte', 'auto', 'pie'];
             var process_next = function(results) {
                 full_results = full_results.concat(results);
                 var type = types.pop();
