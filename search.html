@@ -338,26 +338,7 @@
 
         Yeca.init();
 
-<<<<<<< HEAD
         Yeca.initAutocompleter(
-=======
-//        $("asdas")
-//        Yeca.changePage(3);
-
-
-        function initAutocompleter(id, afterSelectionCb, afterGeocodingCb) {
-            new usig.AutoCompleter(id, {
-                skin:'dark',
-                onReady:function () {
-                    $('#' + id).val('').removeAttr('disabled');
-                },
-                afterSelection:afterSelectionCb,
-                afterGeoCoding:afterGeocodingCb
-            });
-        }
-
-        initAutocompleter(
->>>>>>> Fix broken map from page 2
                 'from-input',
                 function (option) {
                     if (option instanceof usig.Direccion || option instanceof usig.inventario.Objeto) {
