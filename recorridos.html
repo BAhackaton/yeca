@@ -72,6 +72,9 @@
                     usig.Recorridos.opts.tipo = type;
                     usig.Recorridos.buscarRecorridos(from, to, process_next);
                 } else {
+                    full_results.sort(function(a,b) {
+                        return a.getTime() - b.getTime();
+                    });
                     success(full_results);
                 }
             };
