@@ -200,9 +200,17 @@ td { vertical-align: top; }
 
 
 /* ==|== primary styles =====================================================
-   Author:
+   Author: Vincent
    ========================================================================== */
 
+.header-logo {
+    padding: 7px;
+}
+
+.header-logo img {
+    height:  45px;
+    width:75px;
+}
 
 
 

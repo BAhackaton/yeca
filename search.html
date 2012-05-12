@@ -74,15 +74,17 @@
 <!-- //Templating html -->
 
 <div id="container">
+
     <header>
         <h1>Loading Yeca...</h1>
     </header>
 
     <!-- Start of first page: #one -->
     <div data-role="page" id="one">
-
-        <div data-role="header">
-            <h1>Yeca</h1>
+        <div data-role="header" data-theme="d">
+            <div class="header-logo">
+                <img src="marketing/logo.png" >
+            </div>
         </div>
         <!-- /header -->
 
@@ -118,9 +120,10 @@
 
     <!-- Start of second page: #two -->
     <div data-role="page" id="two">
-
-        <div data-role="header">
-            <h1>Recorridos</h1>
+        <div data-role="header" data-theme="d">
+            <div class="header-logo">
+                <img src="marketing/logo.png" >
+            </div>
         </div>
         <!-- /header -->
 
@@ -148,12 +151,13 @@
     </div>
     <!-- /page two -->
 
-
     <!-- Start of second page: #three -->
     <div data-role="page" id="three">
 
-        <div data-role="header">
-            <h1>Resumen</h1>
+        <div data-role="header" data-theme="d">
+            <div class="header-logo">
+                <img src="marketing/logo.png" >
+            </div>
         </div>
         <!-- /header -->
 
@@ -185,8 +189,9 @@
     <!-- /page two -->
 
     <footer>
-
+        This is the footer
     </footer>
+
 </div>
 <!--! end of #container -->
 
@@ -225,6 +230,7 @@
     };
 
     var detect_bus = /^\d/;
+    var detect_train = /^F\.C\./;
     var paths;
 
     function extend_data(id) {
@@ -254,8 +260,7 @@
         $(paths).each(function (index, v) {
             var tipo = v.getTipo();
             v.desc = tipo == 'walk' ? 'Caminando' : tipo == 'car' ? 'En auto' : v.toString();
-            v.tipo = tipo != 'transporte_publico' ? tipo : v.desc.match(detect_bus) ? 'bus' : 'subway';
-
+            v.tipo = tipo != 'transporte_publico' ? tipo : v.desc.match(detect_bus) ? 'bus' : v.desc.match(detect_train) ? 'train' : 'subway';
         });
 
         var posiblePaths = $(paths).map(function (index, p) {
