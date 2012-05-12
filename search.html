@@ -320,15 +320,16 @@
     $(function () {
 
         $("#go-button").bind("click tap", function () {
-            Yeca.searchPaths(function (paths) {
-                // TODO Validar que tengo origin y destination
-                Yeca.changePage(2);
-                /*
-                 $("#map").appendTo("#map-container-2");
-                 $.mobile.changePage($("#two"));
-                 */
-                show_paths(paths);
-            });
+            var toText = $("#to-input").val();
+            if (_.isEmpty(toText)) {
+                $("#to-input").addClass("invalid-input");
+            } else {
+                $("#to-input").removeClass("invalid-input");
+                Yeca.searchPaths(function (paths) {
+                    Yeca.changePage(2);
+                    show_paths(paths);
+                });
+            }
         });
 
         //Return to the result paths
@@ -394,7 +395,7 @@
 <!-- Debugger - remove for production -->
 <!-- <script src="https://getfirebug.com/firebug-lite.js"></script> -->
 
-<!-- Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
+<!-- Asynchronous ,Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
 mathiasbynens.be/notes/async-analytics-snippet -->
 <script>
     var _gaq = [
