@@ -60,7 +60,7 @@
     <li>
         <a onclick="extend_data(<%=path.id%>)" href="#three">
             <img class="ui-li-icon" src="<%=path.favicon%>" width="25" height="25">
-            (00:20) <%=path.title%> &nbsp;&nbsp;&nbsp; (Calorias consumidas / Emisiones de co2)
+            <%=path.title%>&nbsp;(<%=path.time%>)
         </a>
     </li>
     <% }); %>
@@ -72,7 +72,6 @@
     <% }); %>
 </textarea>
 <!-- //Templating html -->
-
 
 <div id="container">
     <header>
@@ -191,7 +190,6 @@
 </div>
 <!--! end of #container -->
 
-
 <!-- JavaScript at the bottom for fast page loading -->
 
 <!-- USIG API -->
@@ -219,6 +217,10 @@
     var icons = {
         "walk":"img/Icons/Transport/pedestriancrossing.png",
         "car":"img/Icons/Transport/car.png",
+        "bus":"img/Icons/Transport/bus.png",
+        "train":"img/Icons/Transport/tramway.png",
+        "subway":"img/Icons/Transport/underground.png",
+        "cycle":"img/Icons/Transport/cycling.png",
         "transporte_publico":"img/Icons/Transport/underground.png"
     };
 
@@ -235,11 +237,10 @@
                             text:this.text
                         }
                     });
-                    console.log("Details",detailSteps);
 
-                    console.log("Stepps",stepsHtml);
                     var stepsHtml = _.template($("#path-steps-detail").text(), {steps:detailSteps});
                     $("#data ol").append($(stepsHtml));
+
                 },
 
                 function () {
@@ -261,14 +262,14 @@
             return {
                 id:index,
                 title:p.desc,
-                favicon:icons[p.tipo]
+                favicon:icons[p.tipo],
+                time:p.time_string()
             }
         });
 
         var directionsHtml = _.template($("#path-result-item-template").text(), {paths:posiblePaths});
         $("#search-result-list").append($(directionsHtml));
         $("#search-result-list").listview('refresh');
-
 
     }
 
@@ -292,7 +293,6 @@
     }
 
     $(function () {
-
         search_paths(
                 new usig.Punto(107577.429171, 100133.783044),
                 new usig.Punto(106846.501267, 101724.82835),
