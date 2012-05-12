@@ -55,11 +55,17 @@
 <textarea id="path-result-item-template" style="display: none;">
     <% _.each(paths,function (path) { %>
     <li>
-        <a onclick="extend_data(<%=path.id%>)" href="#">
+        <a onclick="extend_data(<%=path.id%>)" href="#three">
             <img class="ui-li-icon" src="<%=path.favicon%>" width="25" height="25">
             (00:20) <%=path.title%> &nbsp;&nbsp;&nbsp; (Calorias consumidas / Emisiones de co2)
         </a>
     </li>
+    <% }); %>
+</textarea>
+
+<textarea id="path-steps-detail" style="display: none;">
+    <% _.each(steps,function (steps) { %>
+        <li> <%=steps.text%></li>
     <% }); %>
 </textarea>
 <!-- //Templating html -->
@@ -138,9 +144,42 @@
                 <a href="#one" data-transition="fade" data-role="button">Volver a buscar</a>
             </p>
 
-            <div id="data">
+        </div>
+        <!-- /content -->
+        <div data-role="footer" data-theme="d">
+            <h4>Footer</h4>
+        </div>
+    </div>
+    <!-- /page two -->
 
+
+    <!-- Start of second page: #three -->
+    <div data-role="page" id="three">
+
+        <div data-role="header">
+            <h1>Resumen</h1>
+        </div>
+        <!-- /header -->
+
+        <div data-role="content">
+            <h2>Detalle del recorrido:</h2>
+            <br/>
+            <div id="data">
+                <ol>
+
+                </ol>
             </div>
+
+            <!--
+            <ul id="search-result-list" data-role="listview" data-theme="c">
+                <!-- Here must be the list of possible paths --
+            </ul>
+            -->
+
+            <p>
+                <a href="#two" data-transition="fade" data-role="button">Volver</a>
+            </p>
+
         </div>
         <!-- /content -->
         <div data-role="footer" data-theme="d">
@@ -187,32 +226,24 @@
 
     var detect_bus = /^\d/;
     var paths;
+
     function extend_data(id) {
         var path = paths[id];
-        path.getDetalle(
-                function (detalle) {
-                    $("#data").empty();
-                    $("<p>Resumen:</p>").appendTo("#data");
-                    var html = '<ol>';
-                    $(detalle).each(function () {
-                        html += '<li>' + this.text + '</li>';
-                    });
-                    html += '</ol>';
-                    $(html).appendTo("#data");
 
-                    var plan = path.getPlan();
-                    $("<p>Plan:</p>").appendTo("#data");
-                    html = '<ol>';
-                    $(plan).each(function () {
-                        html += '<li><ul>';
-                        $.each(this, function (k, v) {
-                            html += '<li><em>' + k + '</em>: ' + v + '</li>';
-                        });
-                        html += '</ul></li>';
+        path.getDetalle(function (detalle) {
+
+                    var detailSteps = $(detalle).map(function () {
+                        return {
+                            text:this.text
+                        }
                     });
-                    html += '</ol>';
-                    $(html).appendTo("#data");
+                    console.log("Details",detailSteps);
+
+                    console.log("Stepps",stepsHtml);
+                    var stepsHtml = _.template($("#path-steps-detail").text(), {steps:detailSteps});
+                    $("#data ol").append($(stepsHtml));
                 },
+
                 function () {
                     alert('Se produjo un error al intentar cargar los detalles del recorrido.');
                 });
@@ -230,7 +261,7 @@
 
         var posiblePaths = $(paths).map(function (index, p) {
             return {
-                id: index,
+                id:index,
                 title:p.desc,
                 favicon:icons[p.tipo]
             }
