@@ -5,24 +5,67 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <title>USIG - Recorridos</title>
 	<script type="text/javascript" src="js/libs/jquery-1.7.1.min.js"></script>
-	<script src="js/utils.js" type="text/javascript"></script>
 	<script src="http://servicios.usig.buenosaires.gob.ar/usig-js/dev/usig.AutoCompleterFull.min.js" type="text/javascript"></script>
 	<script src="http://servicios.usig.buenosaires.gob.ar/usig-js/dev/usig.Recorridos.min.js" type="text/javascript"></script>
+	<style>
+	em {
+	    font-weight: bold;
+	}
+	</style>
 
 	<script type="text/javascript">
-	    function show_paths(paths) {
-	        $(paths).each(function(){
+	    var paths;
+	    function extend_data(id) {
+	        var path = paths[id];
+	        path.getDetalle(
+	            function(detalle) {
+	                $("#data").empty();
+	                $("<p>Resumen:</p>").appendTo("#data");
+	                var html = '<ol>';
+					$(detalle).each(function() {
+					    html += '<li>'+this.text+'</li>';
+					});
+					html+='</ol>';
+					$(html).appendTo("#data");
+
+					var plan = path.getPlan();
+					$("<p>Plan:</p>").appendTo("#data");
+					html = '<ol>';
+					$(plan).each(function() {
+					    html += '<li><ul>';
+					    $.each(this, function(k,v) {
+					        html += '<li><em>'+k + '</em>: ' + v + '</li>';
+					    });
+					    html += '</ul></li>';
+					    //html += '<li>type:'+this.type+', time:'+this.time+', traveled:'+this.traveled+', walked:'+this.walked+', gml:'+this.gml+'</li>';
+					});
+					html+='</ol>';
+					$(html).appendTo("#data");
+			    },
+			    function() { alert('Se produjo un error al intentar cargar los detalles del recorrido.'); });
+	    }
+
+	    function show_paths(found) {
+	        paths = found;
+	        $(paths).each(function(index, v){
 	            var li = $("<li>");
-	            var desc = this.toString();
-	            desc += ' (tardas ' + this.getTime() + ')';
-	            $(li).html(desc);
+	            var a = $("<a href='#'>");
+	            a.attr("path_index", index);
+	            var desc = v.toString();
+	            desc += ' (tardas ' + v.getTime() + ')';
+	            $(a).text(desc);
+	            $(a).click(function() {
+	                extend_data($(this).attr("path_index"));
+	                return false;
+	            });
+	            a.appendTo(li);//$(li).html(desc);
 	            li.appendTo("#paths");
 	        });
 	    }
 
         function search_paths(from, to, success, error) {
             var full_results = [];
-            var types = ['transporte', 'auto', 'pie'];
+            var types = ['transporte'/*, 'auto', 'pie'*/];
             var process_next = function(results) {
                 full_results = full_results.concat(results);
                 var type = types.pop();
@@ -37,9 +80,6 @@
         }
 
 	    $(document).ready(function(){
-	        var from = getURLParameter('from');
-	        var to = getURLParameter('to');
-	        $('#legend').text("Vas desde " + from + " hasta " + to);
 	        search_paths(
 	            new usig.Punto(107577.429171,100133.783044),
 	            new usig.Punto(106846.501267,101724.82835),
@@ -54,5 +94,6 @@
     <span id="legend"></span>
     <ul id="paths">
     </ul>
+    <div id="data"></div>
   </body>
 </html>
