@@ -14,7 +14,7 @@
     <!-- Mobile viewport optimization h5bp.com/ad -->
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
     <!-- Home screen icon  Mathias Bynens mathiasbynens.be/notes/touch-icons -->
     <!-- For iPhone 4 with high-resolution Retina display: -->
@@ -42,7 +42,7 @@
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.css"/>
-    <link rel="stylesheet" href="js/libs/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="js/libs/leaflet/leaflet.css"/>
 
     <!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
     <script src="js/libs/modernizr-2.0.6.min.js"></script>
@@ -68,7 +68,7 @@
 
 <textarea id="path-steps-detail" style="display: none;">
     <% _.each(steps,function (steps) { %>
-        <li> <%=steps.text%></li>
+    <li> <%=steps.text%></li>
     <% }); %>
 </textarea>
 <!-- //Templating html -->
@@ -76,16 +76,31 @@
 <div id="container">
 
     <header>
-        <h1>Loading Yeca...</h1>
+        <!-- <h1>Loading Yeca...</h1> -->
     </header>
 
     <!-- Start of first page: #one -->
     <div data-role="page" id="one">
         <div data-role="header" data-theme="d">
-            <div class="header-logo">
-                <img src="marketing/logo.png" >
-            </div>
+
+
+            <h1>
+                <div id="image-logo">
+                    <img src="marketing/logo.png">
+                </div>
+            </h1>
+
+            <a id="go-button"
+               href="#"
+               data-transition="slide"
+               data-role="button"
+               data-icon="arrow-r"
+               data-iconpos="right"
+               data-mini="true"
+               class="ui-btn-right">Ir!</a>
         </div>
+
+
         <!-- /header -->
 
         <div data-role="content">
@@ -95,22 +110,24 @@
                 <!--<div class="ui-block-a" data-inline="true">-->
                 <div>
                     <p>
-                    <label for="from-input" class="ui-hidden-accessible">Desde</label>
-                    <input type="text" name="from-string" id="from-input" placeholder="Desde donde estoy" data-mini="true" disabled/>
+                        <label for="from-input" class="ui-hidden-accessible">Desde</label>
+                        <input type="text" name="from-string" id="from-input" placeholder="Desde donde estoy"
+                               data-mini="true" disabled/>
                     </p>
 
                     <p>
-                    <label for="to-input" class="ui-hidden-accessible">Hasta</label>
-                    <input type="text" name="from-string" id="to-input" placeholder="Hasta" data-mini="true" disabled/>
+                        <label for="to-input" class="ui-hidden-accessible">Hasta</label>
+                        <input type="text" name="from-string" id="to-input" placeholder="Hasta" data-mini="true"
+                               disabled/>
                     </p>
 
-                    <p><a id="go-button" href="#two" data-transition="slide" data-role="button" data-icon="arrow-r"
-                          data-iconpos="right" data-mini="true">Comparar opciones</a></p>
                 </div>
 
             </form>
 
-            <div id="map-container-1"><div id="map"></div></div>
+            <div id="map-container-1">
+                <div id="map"></div>
+            </div>
 
         </div>
         <!-- /content -->
@@ -122,7 +139,7 @@
     <div data-role="page" id="two">
         <div data-role="header" data-theme="d">
             <div class="header-logo">
-                <img src="marketing/logo.png" >
+                <img src="marketing/logo.png">
             </div>
         </div>
         <!-- /header -->
@@ -134,7 +151,8 @@
             <ul id="search-result-list" data-role="listview" data-theme="c">
                 <!-- Here must be the list of possible paths -->
             </ul>
-             <br />
+            <br/>
+
             <p>
                 <a href="#one" data-transition="slide" data-role="button">Volver a buscar</a>
             </p>
@@ -152,7 +170,7 @@
 
         <div data-role="header" data-theme="d">
             <div class="header-logo">
-                <img src="marketing/logo.png" >
+                <img src="marketing/logo.png">
             </div>
         </div>
         <!-- /header -->
@@ -160,17 +178,12 @@
         <div data-role="content">
             <h2>Detalle del recorrido:</h2>
             <br/>
+
             <div id="data">
                 <ol>
 
                 </ol>
             </div>
-
-            <!--
-            <ul id="search-result-list" data-role="listview" data-theme="c">
-                <!-- Here must be the list of possible paths --
-            </ul>
-            -->
 
             <p>
                 <a href="#two" data-transition="slide" data-role="button">Volver</a>
@@ -301,8 +314,8 @@
                     alert("error");//$('#recorridos').html('Se produjo un error el buscar el recorrido.');
                 });
 
-        $("#go-button").bind("click tap", function() {
-            Yeca.searchPaths(function(paths) {
+        $("#go-button").bind("click tap", function () {
+            Yeca.searchPaths(function (paths) {
                 // TODO Validar que tengo origin y destination
                 $.mobile.changePage($("#two"));
                 $("#map").appendTo("#map-container-2");
@@ -314,13 +327,13 @@
 
         function initAutocompleter(id, afterSelectionCb, afterGeocodingCb) {
             new usig.AutoCompleter(id, {
-                        skin:'dark',
-                        onReady:function () {
-                            $('#' + id).val('').removeAttr('disabled');
-                        },
-                        afterSelection: afterSelectionCb,
-                        afterGeoCoding: afterGeocodingCb
-                    });
+                skin:'dark',
+                onReady:function () {
+                    $('#' + id).val('').removeAttr('disabled');
+                },
+                afterSelection:afterSelectionCb,
+                afterGeoCoding:afterGeocodingCb
+            });
         }
 
         initAutocompleter(
@@ -339,7 +352,7 @@
                 }
         );
 
-        $("#from-input").bind("blur", function() {
+        $("#from-input").bind("blur", function () {
             var value = $(this).value();
         });
 
