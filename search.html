@@ -117,6 +117,7 @@
                                disabled/>
                     </p>
 
+
                 </div>
 
             </form>
@@ -135,7 +136,7 @@
     <div data-role="page" id="two">
         <div data-role="header" data-theme="d">
 
-            <a href="#one"
+            <a href="#"
                data-transition="slide"
                data-role="button"
                data-icon="arrow-l"
@@ -146,7 +147,7 @@
                 <img class="header-image" src="marketing/logo.png">
             </h1>
 
-            <a href="#three"
+            <a href="#"
                data-transition="slide"
                data-icon="arrow-r"
                data-iconpos="right"
@@ -158,17 +159,16 @@
 
         <div class="" data-role="content">
 
-            <div class="map-complement">
-                <ul id="search-result-list" data-role="listview" data-theme="c">
-                    <!-- Here must be the list of possible paths -->
-                </ul>
-
             <ul id="search-result-list" data-role="listview" data-theme="c">
                 <!-- Here must be the list of possible paths -->
             </ul>
+
             <br/>
 
+            <div id="map-container-2"></div>
+
         </div>
+
         <!-- /content -->
         <div data-role="footer" data-theme="d">
             <h4></h4>
@@ -176,7 +176,7 @@
     </div>
     <!-- /page two -->
 
-    <!-- Start of second page: #three -->
+    <!-- Start of thirth page: #three -->
     <div data-role="page" id="three">
 
         <div data-role="header" data-theme="d">
@@ -184,7 +184,7 @@
                 <img class="header-image" src="marketing/logo.png">
             </h1>
 
-            <a href="#two"
+            <a href="#"
                data-transition="slide"
                data-icon="arrow-l"
                data-iconpos="left"
@@ -201,8 +201,8 @@
             <div id="data">
                 <ol>
 
-                    </ol>
-                </div>
+                </ol>
+            </div>
 
         </div>
         <!-- /content -->
@@ -329,8 +329,8 @@
                 // TODO Validar que tengo origin y destination
                 Yeca.changePage(2);
                 /*
-                $("#map").appendTo("#map-container-2");
-                $.mobile.changePage($("#two"));
+                 $("#map").appendTo("#map-container-2");
+                 $.mobile.changePage($("#two"));
                  */
                 show_paths(paths);
             });
@@ -338,7 +338,26 @@
 
         Yeca.init();
 
+<<<<<<< HEAD
         Yeca.initAutocompleter(
+=======
+//        $("asdas")
+//        Yeca.changePage(3);
+
+
+        function initAutocompleter(id, afterSelectionCb, afterGeocodingCb) {
+            new usig.AutoCompleter(id, {
+                skin:'dark',
+                onReady:function () {
+                    $('#' + id).val('').removeAttr('disabled');
+                },
+                afterSelection:afterSelectionCb,
+                afterGeoCoding:afterGeocodingCb
+            });
+        }
+
+        initAutocompleter(
+>>>>>>> Fix broken map from page 2
                 'from-input',
                 function (option) {
                     if (option instanceof usig.Direccion || option instanceof usig.inventario.Objeto) {
