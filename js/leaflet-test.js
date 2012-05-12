@@ -142,7 +142,10 @@
 //                }
             }
 
-            if (layer) map.addLayer(layer);
+            if (layer) {
+                map.addLayer(layer);
+                currentPlanLayers.push(layer);
+            }
         }
     }
 
