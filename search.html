@@ -338,18 +338,7 @@
 
         Yeca.init();
 
-        function initAutocompleter(id, afterSelectionCb, afterGeocodingCb) {
-            new usig.AutoCompleter(id, {
-                skin:'dark',
-                onReady:function () {
-                    $('#' + id).val('').removeAttr('disabled');
-                },
-                afterSelection:afterSelectionCb,
-                afterGeoCoding:afterGeocodingCb
-            });
-        }
-
-        initAutocompleter(
+        Yeca.initAutocompleter(
                 'from-input',
                 function (option) {
                     if (option instanceof usig.Direccion || option instanceof usig.inventario.Objeto) {
@@ -365,7 +354,7 @@
                 }
         );
 
-        initAutocompleter(
+        Yeca.initAutocompleter(
                 'to-input',
                 function (option) {
                     if (option instanceof usig.Direccion || option instanceof usig.inventario.Objeto) {

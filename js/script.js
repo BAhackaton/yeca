@@ -140,6 +140,17 @@
         }
     };
 
+    Yeca.initAutocompleter = function(id, afterSelectionCb, afterGeocodingCb) {
+        new usig.AutoCompleter(id, {
+            skin:'dark',
+            onReady:function () {
+                $('#' + id).val('').removeAttr('disabled');
+            },
+            afterSelection:afterSelectionCb,
+            afterGeoCoding:afterGeocodingCb
+        });
+    };
+
     var pageSelectors = ["#one", "#two", "#three"];
     Yeca.changePage = function(n) {
         $("#map").appendTo("#map-container-" + n);
