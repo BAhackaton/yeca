@@ -2,6 +2,9 @@
 
     window.Yeca || (window.Yeca = {});
 
+    var currentLocation;
+    var usingDefaultLocation;
+
     // Origin and destination are locations (Direccion, Inventario)
     Yeca.origin = null;
     Yeca.destination = null;
@@ -12,7 +15,7 @@
          */
         // TODO Handle errors
         var full_results = [];
-        var types = ['transporte', 'auto', 'pie'];
+        var types = ['transporte', 'pie', 'auto'];
 
         var origin = Yeca.origin && Yeca.origin.getCoordenadas();
         origin = origin || Yeca.userLocation;
@@ -34,6 +37,22 @@
                         Yeca.destination.getCoordenadas(),
                         process_next);
             } else {
+                // FIXME: Add cloudmade support!
+                var bike_time = full_results[0].getTime();
+                var bike_result = $.extend({}, full_results[0],
+                {   getTime: function() { return bike_time;},
+                    getTipo: function() { return 'cycle';},
+                    time_string: function() { return bike_time + "'";}
+                });
+                full_results.push(bike_result);
+                
+                // Car estimation is very bad:
+                full_results[0].getTime = function() {
+                    return bike_time*1.2;
+                }
+                full_results[0].time_string = function() {
+                    return bike_time*1.2 + "'";
+                }
                 full_results.sort(function (a, b) {
                     return a.getTime() - b.getTime();
                 });

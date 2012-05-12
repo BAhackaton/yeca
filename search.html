@@ -280,7 +280,7 @@
 
         $(paths).each(function (index, v) {
             var tipo = v.getTipo();
-            v.desc = tipo == 'walk' ? 'Caminando' : tipo == 'car' ? 'En auto' : v.toString();
+            v.desc = tipo == 'walk' ? 'Caminando' : tipo == 'car' ? 'En auto' : tipo == 'cycle' ? 'En bici' : v.toString();
             v.tipo = tipo != 'transporte_publico' ? tipo : v.desc.match(detect_bus) ? 'bus' : v.desc.match(detect_train) ? 'train' : 'subway';
         });
 
