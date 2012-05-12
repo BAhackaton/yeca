@@ -51,7 +51,7 @@
 	            var a = $("<a href='#'>");
 	            a.attr("path_index", index);
 	            var desc = v.toString();
-	            desc += ' (tardas ' + v.getTime() + ')';
+	            desc += ' (tardas ' + v.getTime() + ' en ' + v.getTipo() +')';
 	            $(a).text(desc);
 	            $(a).click(function() {
 	                extend_data($(this).attr("path_index"));
