@@ -32,15 +32,16 @@
 
     function onLocationError(e) {
         map.setView(start, 6);
-        alert(e.message);
+        alert("No pudimos encontrar tu ubicacion, por favor revisa la configuracion de tu navegador");
     }
 
     function onClickEvt(e) {
         map.addLayer(new L.Marker(e.latlng));
+        /*
         console.log(map.project(e.latlng, map.getZoom()).x + ', ' + map.project(e.latlng, map.getZoom()).y);
         console.log(e.latlng.lat + ', ' + e.latlng.lng);
         console.log(map.latLngToLayerPoint(e.latlng));
-
+         */
     }
 
     var projection = new Proj4js.Proj('SR-ORG:7128');
@@ -333,7 +334,7 @@
             return new L.LatLng(projected.y, projected.x);
         });
 
-        console.log(latLngs);
+        //console.log(latLngs);
         map.addLayer(new L.Polyline(latLngs, {color:'red'}));
 
     }

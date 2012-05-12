@@ -1,7 +1,10 @@
 (function() {
 
-    var Yeca = {};
+    window.Yeca || (window.Yeca = {});
+
     var currentLocation;
+    Yeca.origin = null;
+    Yeca.destiny = null;
 
     function _searchPaths(fromPoint, toPoint, successHandler, errorHandler) {
         /* Search paths "sequentially", aggregate them and then pass all to successHandler
@@ -15,10 +18,8 @@
     }
 
     // Takes two "colloquial" addresses, geolocates them and requests all paths to USIG
-    Yeca.searchPaths = function(from, to, successHandler, errorHandler) {
-        var fromPoint = geolocate(from);
-        var toPoint = geolocate(to);
-        _searchPaths(fromPoint, toPoint, successHandler, errorHandler)
+    Yeca.searchPaths = function(successHandler, errorHandler) {
+        _searchPaths(Yeca.origin, Yeca.destiny, successHandler, errorHandler)
     };
 
     // All configuration is optional. See Yeca.tests.getLocationTest
@@ -45,13 +46,6 @@
             }
         })
     };
-
-    (function init() {
-        Yeca.origin = null;
-        Yeca.destiny = null;
-    })();
-
-    window.Yeca || (window.Yeca = Yeca);
 
     Yeca.tests = {
         getLocationTest: function() {
@@ -98,5 +92,10 @@
 
     Yeca.failTest = function(name, exception) { console.error("Test " + name + " failed with exception: " + exception); }
 
+    Yeca.isIOS = function() {
+        return (!!navigator.userAgent.match(/iPad/i)
+                || !!navigator.userAgent.match(/iPhone/i)
+                || !!navigator.userAgent.match(/iPod/i))
+    }
 
 })();
