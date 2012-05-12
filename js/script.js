@@ -113,10 +113,38 @@
 
     Yeca.failTest = function(name, exception) { console.error("Test " + name + " failed with exception: " + exception); }
 
+    // View
+
     Yeca.isIOS = function() {
         return (!!navigator.userAgent.match(/iPad/i)
                 || !!navigator.userAgent.match(/iPhone/i)
                 || !!navigator.userAgent.match(/iPod/i))
-    }
+    };
+
+    Yeca.resizeMap = function() {
+        if ($.mobile.activePage.attr("id") == "one") {
+            $("#map").height(
+                    $("html").height() - $("#one .ui-header").outerHeight(true)
+                            - $("#one .ui-content").outerHeight(true) + $("#one .ui-content").height()
+                            - $("#one form").outerHeight(true)
+            );
+            if (!Yeca.isIOS()) {
+                $("#map").height($("#map").height() - ($("#one").height() - $("html").height()));
+            }
+        } else {
+            $(".map-complement:visible").each(function() {
+                $(this).css('max-height', ($("html").height() * 0.5 - $(".ui-header").height()));
+            });
+            var complementHeight = $(".map-complement:visible").outerHeight(true);
+            $("#map").height($("html").height() - $(".ui-header").outerHeight(true) - 30 - complementHeight);
+        }
+    };
+
+    var pageSelectors = ["#one", "#two", "#three"];
+    Yeca.changePage = function(n) {
+        $("#map").appendTo("#map-container-" + n);
+        $.mobile.changePage($(pageSelectors[n - 1]));
+        Yeca.resizeMap();
+    };
 
 })();

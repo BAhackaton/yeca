@@ -58,7 +58,7 @@
 <textarea id="path-result-item-template" style="display: none;">
     <% _.each(paths,function (path) { %>
     <li>
-        <a onclick="extend_data(<%=path.id%>)" href="#three">
+        <a onclick="extend_data(<%=path.id%>)" href="#">
             <img class="ui-li-icon" src="<%=path.favicon%>" width="25" height="25">
             <%=path.title%>&nbsp;(<%=path.time%>)
         </a>
@@ -104,7 +104,6 @@
 
             <form action="#">
 
-                <!--<div class="ui-block-a" data-inline="true">-->
                 <div>
                     <p>
                         <label for="from-input" class="ui-hidden-accessible">Desde</label>
@@ -157,9 +156,12 @@
         </div>
         <!-- /header -->
 
-        <div data-role="content">
+        <div class="" data-role="content">
 
-            <div id="map-container-2"></div>
+            <div class="map-complement">
+                <ul id="search-result-list" data-role="listview" data-theme="c">
+                    <!-- Here must be the list of possible paths -->
+                </ul>
 
             <ul id="search-result-list" data-role="listview" data-theme="c">
                 <!-- Here must be the list of possible paths -->
@@ -199,8 +201,8 @@
             <div id="data">
                 <ol>
 
-                </ol>
-            </div>
+                    </ol>
+                </div>
 
         </div>
         <!-- /content -->
@@ -268,6 +270,9 @@
                     var stepsHtml = _.template($("#path-steps-detail").text(), {steps:detailSteps});
                     $("#data ol").append($(stepsHtml));
 
+                    Yeca.showPlan(path.getPlan());
+
+                    Yeca.changePage(3);
                 },
 
                 function () {
@@ -296,7 +301,6 @@
         var directionsHtml = _.template($("#path-result-item-template").text(), {paths:posiblePaths});
         $("#search-result-list").empty().append($(directionsHtml));
         $("#search-result-list").listview('refresh');
-
     }
 
     function search_paths(from, to, success, error) {
@@ -319,19 +323,15 @@
     }
 
     $(function () {
-        search_paths(
-                new usig.Punto(107577.429171, 100133.783044),
-                new usig.Punto(106846.501267, 101724.82835),
-                show_paths,
-                function () {
-                    alert("error");//$('#recorridos').html('Se produjo un error el buscar el recorrido.');
-                });
 
         $("#go-button").bind("click tap", function () {
             Yeca.searchPaths(function (paths) {
                 // TODO Validar que tengo origin y destination
-                $.mobile.changePage($("#two"));
+                Yeca.changePage(2);
+                /*
                 $("#map").appendTo("#map-container-2");
+                $.mobile.changePage($("#two"));
+                 */
                 show_paths(paths);
             });
         });
@@ -365,10 +365,6 @@
                 }
         );
 
-        $("#from-input").bind("blur", function () {
-            var value = $(this).value();
-        });
-
         initAutocompleter(
                 'to-input',
                 function (option) {
@@ -385,23 +381,8 @@
                 }
         );
 
-        function resizeMap() {
-            if ($.mobile.activePage.attr("id") == "one") {
-                $("#map").height(
-                        $("html").height() - $("#one .ui-header").outerHeight(true)
-                                - $("#one .ui-content").outerHeight(true) + $("#one .ui-content").height()
-                                - $("#one form").outerHeight(true)
-                );
-                if (!Yeca.isIOS()) {
-                    $("#map").height($("#map").height() - ($("#one").height() - $("html").height()));
-                }
-            } else if ($.mobile.activePage.attr("id") == "two") {
-
-            }
-        }
-
-        resizeMap();
-        $(window).bind("resize orientationchange", resizeMap);
+        Yeca.resizeMap();
+        $(window).bind("resize orientationchange", Yeca.resizeMap);
 
     });
 
