@@ -17,7 +17,10 @@
         var origin = Yeca.origin && Yeca.origin.getCoordenadas();
         origin = origin || Yeca.userLocation;
 
-        if (!origin) return;
+        if (!origin) {
+            alert('Tenés que indicar origen');
+            return;
+        }
 
         var process_next = function (results) {
             full_results = full_results.concat(results);

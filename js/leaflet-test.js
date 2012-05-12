@@ -174,7 +174,7 @@
         } // for
 
         // Fits the plan on the map =D
-        map.fitBounds(planBounds);
+//        map.fitBounds(planBounds);
     }
 
     function removeCurrentPlanLayers() {
