@@ -15,6 +15,7 @@
 
 	<script type="text/javascript">
 	    var detect_bus = /^\d/;
+	    var detect_train = /^F\.C\./;
 	    var paths;
 	    function extend_data(id) {
 	        var path = paths[id];
@@ -50,7 +51,7 @@
 	        $(paths).each(function(index, v) {
                 var tipo = v.getTipo();
                 v.desc = tipo == 'walk' ? 'Caminando' : tipo == 'car' ? 'En auto' : v.toString();
-	            v.tipo = tipo != 'transporte_publico' ? tipo : v.desc.match(detect_bus) ? 'bus' : 'subway';
+	            v.tipo = tipo != 'transporte_publico' ? tipo : v.desc.match(detect_bus) ? 'bus' : v.desc.match(detect_train) ? 'train' : 'subway';
 	            var li = $("<li>");
 	            var a = $("<a href='#'>");
 	            a.attr("path_index", index);
@@ -87,8 +88,8 @@
 
 	    $(document).ready(function(){
 	        search_paths(
-	            new usig.Punto(107577.429171,100133.783044),
-	            new usig.Punto(106846.501267,101724.82835),
+	            new usig.Punto(99806.2879306,108937.669478),
+	            new usig.Punto(108204.8151444096147316,104461.2235419094067765),
 	            show_paths,
 	            function() {
 				    alert("error");//$('#recorridos').html('Se produjo un error el buscar el recorrido.');
