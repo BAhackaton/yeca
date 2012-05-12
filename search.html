@@ -55,7 +55,7 @@
 <textarea id="path-result-item-template" style="display: none;">
     <% _.each(paths,function (path) { %>
     <li>
-        <a href="#">
+        <a onclick="extend_data(<%=path.id%>)" href="#">
             <img class="ui-li-icon" src="<%=path.favicon%>" width="25" height="25">
             (00:20) <%=path.title%> &nbsp;&nbsp;&nbsp; (Calorias consumidas / Emisiones de co2)
         </a>
@@ -78,24 +78,24 @@
         </div>
         <!-- /header -->
 
-        <div data-role="content" >
+        <div data-role="content">
 
             <form action="#">
 
                 <!--<div class="ui-block-a" data-inline="true">-->
                 <div>
                     <p>
-                    <label for="from-input" class="ui-hidden-accessible">Desde</label>
-                    <input type="text" name="from-string" id="from-input" placeholder="Desde" data-mini="true"/>
+                        <label for="from-input" class="ui-hidden-accessible">Desde</label>
+                        <input type="text" name="from-string" id="from-input" placeholder="Desde" data-mini="true"/>
                     </p>
 
                     <p>
-                    <label for="to-input" class="ui-hidden-accessible">Hasta</label>
-                    <input type="text" name="from-string" id="to-input" placeholder="Hasta" data-mini="true"/>
+                        <label for="to-input" class="ui-hidden-accessible">Hasta</label>
+                        <input type="text" name="from-string" id="to-input" placeholder="Hasta" data-mini="true"/>
                     </p>
 
                     <p><a id="go-button" href="#two" data-transition="slide" data-role="button" data-icon="arrow-r"
-                       data-iconpos="right" data-mini="true">Comparar opciones</a></p>
+                          data-iconpos="right" data-mini="true">Comparar opciones</a></p>
                 </div>
 
             </form>
@@ -103,7 +103,8 @@
             <iframe style="width: 100%;" height="250" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
                     src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=es&amp;geocode=&amp;q=Algarrobo+1001,+Ciudad+Aut%C3%B3noma+de+Buenos+Aires,+Argentina&amp;aq=0&amp;oq=algarrobo+10&amp;sll=-34.603723,-58.381593&amp;sspn=0.280328,0.676346&amp;t=h&amp;ie=UTF8&amp;hq=&amp;hnear=Algarrobo+1001,+Barracas,+Buenos+Aires,+Argentina&amp;z=14&amp;ll=-34.65435,-58.379507&amp;output=embed"></iframe>
 
-        </div><!-- /content -->
+        </div>
+        <!-- /content -->
 
     </div>
     <!-- /page one -->
@@ -136,6 +137,10 @@
             <p>
                 <a href="#one" data-transition="fade" data-role="button">Volver a buscar</a>
             </p>
+
+            <div id="data">
+
+            </div>
         </div>
         <!-- /content -->
         <div data-role="footer" data-theme="d">
@@ -158,8 +163,10 @@
 <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
 <!-- USIG API -->
-<script src="http://servicios.usig.buenosaires.gob.ar/usig-js/dev/usig.AutoCompleterFull.min.js" type="text/javascript"></script>
-<script src="http://servicios.usig.buenosaires.gob.ar/usig-js/dev/usig.Recorridos.min.js" type="text/javascript"></script>
+<script src="http://servicios.usig.buenosaires.gob.ar/usig-js/dev/usig.AutoCompleterFull.min.js"
+        type="text/javascript"></script>
+<script src="http://servicios.usig.buenosaires.gob.ar/usig-js/dev/usig.Recorridos.min.js"
+        type="text/javascript"></script>
 
 <!-- jQuery Mobile -->
 <script src="js/libs/jquery.mobile-1.1.0.js"></script>
@@ -178,28 +185,77 @@
         "transporte_publico":"img/Icons/Transport/underground.png"
     };
 
-    function show_paths(paths) {
-        var posiblePaths = $(paths).map(function () {
+    var detect_bus = /^\d/;
+    var paths;
+    function extend_data(id) {
+        var path = paths[id];
+        path.getDetalle(
+                function (detalle) {
+                    $("#data").empty();
+                    $("<p>Resumen:</p>").appendTo("#data");
+                    var html = '<ol>';
+                    $(detalle).each(function () {
+                        html += '<li>' + this.text + '</li>';
+                    });
+                    html += '</ol>';
+                    $(html).appendTo("#data");
+
+                    var plan = path.getPlan();
+                    $("<p>Plan:</p>").appendTo("#data");
+                    html = '<ol>';
+                    $(plan).each(function () {
+                        html += '<li><ul>';
+                        $.each(this, function (k, v) {
+                            html += '<li><em>' + k + '</em>: ' + v + '</li>';
+                        });
+                        html += '</ul></li>';
+                    });
+                    html += '</ol>';
+                    $(html).appendTo("#data");
+                },
+                function () {
+                    alert('Se produjo un error al intentar cargar los detalles del recorrido.');
+                });
+    }
+
+    function show_paths(found) {
+        paths = found;
+
+        $(paths).each(function (index, v) {
+            var tipo = v.getTipo();
+            v.desc = tipo == 'walk' ? 'Caminando' : tipo == 'car' ? 'En auto' : v.toString();
+            v.tipo = tipo != 'transporte_publico' ? tipo : v.desc.match(detect_bus) ? 'bus' : 'subway';
+
+        });
+
+        var posiblePaths = $(paths).map(function (index, p) {
             return {
-                title:this.toString(),
-                favicon: icons[this.getTipo()]
+                id: index,
+                title:p.desc,
+                favicon:icons[p.tipo]
             }
         });
+
         var directionsHtml = _.template($("#path-result-item-template").text(), {paths:posiblePaths});
         $("#search-result-list").append($(directionsHtml));
         $("#search-result-list").listview('refresh');
+
+
     }
 
     function search_paths(from, to, success, error) {
         var full_results = [];
         var types = ['transporte', 'auto', 'pie'];
-        var process_next = function(results) {
+        var process_next = function (results) {
             full_results = full_results.concat(results);
             var type = types.pop();
             if (type) {
                 usig.Recorridos.opts.tipo = type;
                 usig.Recorridos.buscarRecorridos(from, to, process_next);
             } else {
+                full_results.sort(function (a, b) {
+                    return a.getTime() - b.getTime();
+                });
                 success(full_results);
             }
         };
@@ -209,18 +265,17 @@
     $(function () {
 
         search_paths(
-                new usig.Punto(107577.429171,100133.783044),
-                new usig.Punto(106846.501267,101724.82835),
+                new usig.Punto(107577.429171, 100133.783044),
+                new usig.Punto(106846.501267, 101724.82835),
                 show_paths,
-                function() {
+                function () {
                     alert("error");//$('#recorridos').html('Se produjo un error el buscar el recorrido.');
                 });
 
-        $("#go-button").bind("click tap", function() {
-            debugger;
+        $("#go-button").bind("click tap", function () {
             var from = $("input#from-input").val();
             var to = $("input#to-input").val();
-            Yeca.searchPaths(from, to, function(paths) {
+            Yeca.searchPaths(from, to, function (paths) {
                 $.mobile.changePage($("#two"));
                 /*
                  TODO populate list
