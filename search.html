@@ -343,6 +343,12 @@
 
         Yeca.init();
 
+        $("#from-input").on("blur", function() {
+            var value = $(this).val();
+            if (value == null || value.length < 1)
+                Yeca.origin = null;
+        });
+
         Yeca.initAutocompleter(
                 'from-input',
                 function (option) {
