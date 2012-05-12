@@ -273,7 +273,7 @@
         });
 
         var directionsHtml = _.template($("#path-result-item-template").text(), {paths:posiblePaths});
-        $("#search-result-list").append($(directionsHtml));
+        $("#search-result-list").empty().append($(directionsHtml));
         $("#search-result-list").listview('refresh');
 
     }
@@ -307,18 +307,15 @@
                 });
 
         $("#go-button").bind("click tap", function() {
-            $.mobile.changePage($("#two"));
-            $("#map").appendTo("#map-container-2");
             Yeca.searchPaths(function(paths) {
+                // TODO Validar que tengo origin y destination
                 $.mobile.changePage($("#two"));
-                /*
-                 TODO populate list
-                 */
+                $("#map").appendTo("#map-container-2");
+                show_paths(paths);
             });
         });
 
-        Yeca.storeCurrentLocation();
-        // TODO Position map in current location
+        Yeca.init();
 
         function initAutocompleter(id, afterSelectionCb, afterGeocodingCb) {
             new usig.AutoCompleter(id, {
@@ -347,30 +344,38 @@
                 }
         );
 
+        $("#from-input").bind("blur", function() {
+            var value = $(this).value();
+        });
+
         initAutocompleter(
                 'to-input',
                 function (option) {
                     if (option instanceof usig.Direccion || option instanceof usig.inventario.Objeto) {
-                        Yeca.destiny = option;
+                        Yeca.destination = option;
                     }
                 },
                 function (pt) {
                     if (pt instanceof usig.Punto) {
-                        if (Yeca.destiny instanceof usig.Direccion) {
-                            Yeca.destiny.setCoordenadas(pt);
+                        if (Yeca.destination instanceof usig.Direccion) {
+                            Yeca.destination.setCoordenadas(pt);
                         }
                     }
                 }
         );
 
         function resizeMap() {
-            $("#map").height(
-                    $("html").height() - $("#one .ui-header").outerHeight(true)
-                            - $("#one .ui-content").outerHeight(true) + $("#one .ui-content").height()
-                            - $("#one form").outerHeight(true)
-            );
-            if (!Yeca.isIOS()) {
-                $("#map").height($("#map").height() - ($("#one").height() - $("html").height()));
+            if ($.mobile.activePage.attr("id") == "one") {
+                $("#map").height(
+                        $("html").height() - $("#one .ui-header").outerHeight(true)
+                                - $("#one .ui-content").outerHeight(true) + $("#one .ui-content").height()
+                                - $("#one form").outerHeight(true)
+                );
+                if (!Yeca.isIOS()) {
+                    $("#map").height($("#map").height() - ($("#one").height() - $("html").height()));
+                }
+            } else if ($.mobile.activePage.attr("id") == "two") {
+
             }
         }
 

@@ -3,23 +3,36 @@
     window.Yeca || (window.Yeca = {});
 
     var currentLocation;
-    Yeca.origin = null;
-    Yeca.destiny = null;
+    var usingDefaultLocation;
 
-    function _searchPaths(fromPoint, toPoint, successHandler, errorHandler) {
+    // Origin and destination are locations (Direccion, Inventario)
+    Yeca.origin = null;
+    Yeca.destination = null;
+
+    Yeca.searchPaths = function(successHandler, errorHandler) {
         /* Search paths "sequentially", aggregate them and then pass all to successHandler
          * Any error stops the sequence and calls the error handler
          */
-        /*
-        usig.Recorridos.buscarRecorridos(fromPoint, toPoint,
-                    _.isFunction(successHandler) ? successHandler : undefined,
-                    _.isFunction(errorHandler) ? errorHandler : undefined);
-        */
-    }
-
-    // Takes two "colloquial" addresses, geolocates them and requests all paths to USIG
-    Yeca.searchPaths = function(successHandler, errorHandler) {
-        _searchPaths(Yeca.origin, Yeca.destiny, successHandler, errorHandler)
+        // TODO Handle errors
+        var full_results = [];
+        var types = ['transporte', 'auto', 'pie'];
+        var process_next = function (results) {
+            full_results = full_results.concat(results);
+            var type = types.pop();
+            if (type) {
+                usig.Recorridos.opts.tipo = type;
+                usig.Recorridos.buscarRecorridos(
+                        Yeca.origin.getCoordenadas(),
+                        Yeca.destination.getCoordenadas(),
+                        process_next);
+            } else {
+                full_results.sort(function (a, b) {
+                    return a.getTime() - b.getTime();
+                });
+                successHandler(full_results);
+            }
+        };
+        process_next([]);
     };
 
     // All configuration is optional. See Yeca.tests.getLocationTest
@@ -42,10 +55,18 @@
         Yeca.getLocation({
             success: function(position) {
                 // TODO Convert using proj4
-                currentLocation = position.coords;
+                Yeca.origin = position.coords;
+                usingDefaultLocation = true;
+            },
+            error: function() {
+                usingDefaultLocation = false;
             }
         })
     };
+
+    Yeca.init = function() {
+        Yeca.storeCurrentLocation();
+    }
 
     Yeca.tests = {
         getLocationTest: function() {
