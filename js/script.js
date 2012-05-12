@@ -44,9 +44,14 @@
                 currentLocation = position.coords;
             }
         })
-    }
+    };
 
-    window.Yeca = Yeca;
+    (function init() {
+        Yeca.origin = null;
+        Yeca.destiny = null;
+    })();
+
+    window.Yeca || (window.Yeca = Yeca);
 
     Yeca.tests = {
         getLocationTest: function() {
