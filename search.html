@@ -80,6 +80,21 @@
     </header>
 
     <!-- Start of first page: #one -->
+    <div data-role="page" id="splash-screen">
+        <div data-role="content">
+            <form action="#">
+                <div class="splash-logo">
+                    <img src="marketing/logo_big.png" />
+                </div>
+            </form>
+        </div>
+        <!-- /content -->
+
+    </div>
+    <!-- /page one -->
+
+
+    <!-- Start of first page: #one -->
     <div data-role="page" id="one">
         <div data-role="header" data-theme="d">
 
@@ -209,9 +224,6 @@
         </div>
     </div>
     <!-- /page two -->
-
-    <footer>
-    </footer>
 
 </div>
 <!--! end of #container -->
@@ -380,6 +392,9 @@
 
         Yeca.resizeMap();
         $(window).bind("resize orientationchange", Yeca.resizeMap);
+
+        //Finish load the page, and transition to the first page
+        Yeca.changePage(1);
 
     });
 
