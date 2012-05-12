@@ -203,13 +203,9 @@ td { vertical-align: top; }
    Author: Vincent
    ========================================================================== */
 
-.header-logo {
-    padding: 7px;
-}
-
-#image-logo img {
-    height:30px;
-    width:50px;
+.header-image {
+    height:25px;
+    width:45px;
 }
 
 

@@ -83,11 +83,8 @@
     <div data-role="page" id="one">
         <div data-role="header" data-theme="d">
 
-
             <h1>
-                <div id="image-logo">
-                    <img src="marketing/logo.png">
-                </div>
+                <img class="header-image" src="marketing/logo.png">
             </h1>
 
             <a id="go-button"
@@ -138,9 +135,25 @@
     <!-- Start of second page: #two -->
     <div data-role="page" id="two">
         <div data-role="header" data-theme="d">
-            <div class="header-logo">
-                <img src="marketing/logo.png">
-            </div>
+
+            <a href="#one"
+               data-transition="slide"
+               data-role="button"
+               data-icon="arrow-l"
+               data-iconpos="left"
+               data-mini="true">Volver</a>
+
+            <h1>
+                <img class="header-image" src="marketing/logo.png">
+            </h1>
+
+            <a href="#three"
+               data-transition="slide"
+               data-icon="arrow-r"
+               data-iconpos="right"
+               data-mini="true"
+               data-role="button">Detalle</a>
+
         </div>
         <!-- /header -->
 
@@ -152,10 +165,6 @@
                 <!-- Here must be the list of possible paths -->
             </ul>
             <br/>
-
-            <p>
-                <a href="#one" data-transition="slide" data-role="button">Volver a buscar</a>
-            </p>
 
         </div>
         <!-- /content -->
@@ -169,9 +178,17 @@
     <div data-role="page" id="three">
 
         <div data-role="header" data-theme="d">
-            <div class="header-logo">
-                <img src="marketing/logo.png">
-            </div>
+            <h1>
+                <img class="header-image" src="marketing/logo.png">
+            </h1>
+
+            <a href="#two"
+               data-transition="slide"
+               data-icon="arrow-l"
+               data-iconpos="left"
+               data-mini="true"
+               data-role="button">Volver</a>
+
         </div>
         <!-- /header -->
 
@@ -184,10 +201,6 @@
 
                 </ol>
             </div>
-
-            <p>
-                <a href="#two" data-transition="slide" data-role="button">Volver</a>
-            </p>
 
         </div>
         <!-- /content -->
