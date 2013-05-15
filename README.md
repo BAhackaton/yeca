@@ -1,3 +1,6 @@
+Yeca fue construido en el contexto del primer BAHackaton en 2012. Con el avance del [Mapa de la Ciudad de Buenos Aires](http://mapa.buenosaires.gob.ar), y los cambios a su [API](http://data.buenosaires.gob.ar/dataset/mapa-interactivo), Yeca ya no funciona :(
+Podés intentar usarlo igual, o usar el [Mapa de la Ciudad](http://mapa.buenosaires.gob.ar) y tener casi todas sus funcionalidad</p>
+
 yeca
 ====
 "Yeca" es el lunfardo para "Experiencia". Saber moverse por una ciudad eficientemente requiere de eso... pero uno no siempre sabe cómo desplazarse de un punto a otro, y ahí es en donde esta app entra en juego.
@@ -18,7 +21,7 @@ Hoy por hoy las alternativas son:
 
 El Proyecto
 ====
-Con el primer [Hackaton en la Ciudad de Buenos Aires sobre open data](http://cimobsas.org/) (organizado por la dirección de [Información y Gobierno Abierto](http://digital.buenosaires.gob.ar/))como excusa, decidimos facilitar el acceso a información sobre cómo moverse por la ciudad de Buenos Aires.
+Con el primer [Hackaton en la Ciudad de Buenos Aires sobre open data](http://cimobsas.org/) (organizado por la dirección de [Información y Gobierno Abierto](http://digital.buenosaires.gob.ar/)) como excusa, decidimos facilitar el acceso a información sobre cómo moverse por la ciudad de Buenos Aires.
 
 - [Demian Ferreiro](http://github.com/epidemian)
 - [Esteban Invernizzi](http://github.com/invirnizzie)
